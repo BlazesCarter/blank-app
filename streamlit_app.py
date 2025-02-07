@@ -133,7 +133,7 @@ def train_needed_5T(base_stats, total_points, stat_labels, bsat_adjustment=None)
 def main():
     st.title("9-Innings Tools")
 
-    tab1, tab2 = st.tabs(["Home", "5T-Calculator"])
+    tab1, tab2= st.tabs(["Home", "5T-Calculator"])
 
     with tab1:
         st.header("Welcome")
@@ -141,15 +141,15 @@ def main():
 
     with tab2:
         st.header("5T Calculator")
-        st.write("All values are the base + GI")
+        st.write("All values are the original base + GI")
 
         stat_labels = ["CON", "POW", "EYE", "SPD", "FLD"]
         base_stats = [st.number_input(f"Enter {label}:", min_value=1, max_value=150, value=90) for label in stat_labels]
 
-        supreme = st.radio("Is Supreme?", ("No", "Yes"))
+        supreme = st.radio("Supreme?", ("No", "Yes"))
         total_points = 87 if supreme == "Yes" else 57
 
-        use_bsat = st.checkbox("Use BSAT?")
+        use_bsat = st.checkbox("Try with BSAT")
         bsat_adjustment = None
         if use_bsat:
             subtract_stat = st.selectbox("Stat to decrease:", stat_labels, index=1)
