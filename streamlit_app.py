@@ -1,5 +1,7 @@
 import numpy as np
 import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
 
 def train_needed_5T(base_stats, total_points, stat_labels, bsat_adjustment=None):
     """
@@ -133,7 +135,7 @@ def train_needed_5T(base_stats, total_points, stat_labels, bsat_adjustment=None)
 def main():
     st.title("9-Innings Tools")
 
-    tab1, tab2= st.tabs(["Home", "5T-Calculator"])
+    tab1, tab2, tab3 = st.tabs(["Home", "5T-Calculator","Team Sig Odds"])
 
     with tab1:
         st.header("Welcome")
@@ -161,6 +163,100 @@ def main():
         if st.button("Calculate", key="calculate_train"):
             result = train_needed_5T(base_stats, total_points, stat_labels, bsat_adjustment)
             st.text_area("Results:", result, height=200)
+        # Tab 3: Team Signature Odds
+    with tab3:
+        st.header("Team Signature Odds")
+
+        # Team signature counts
+        team_sigs = {
+            "Arizona Diamondbacks": 66, "Atlanta Braves": 72, "Baltimore Orioles": 59,
+            "Boston Red Sox": 76, "Chicago Cubs": 71, "Chicago White Sox": 62, "Cincinnati Reds": 67,
+            "Cleveland Guardians": 67, "Colorado Rockies": 65, "Detroit Tigers": 58, "Houston Astros": 78,
+            "Kansas City Royals": 56, "Los Angeles Angels": 59, "Los Angeles Dodgers": 90,
+            "Miami Marlins": 63, "Milwaukee Brewers": 58, "Minnesota Twins": 69, "New York Mets": 69,
+            "New York Yankees": 75, "Oakland Athletics": 64, "Philadelphia Phillies": 70,
+            "Pittsburgh Pirates": 67, "San Diego Padres": 64, "San Francisco Giants": 56,
+            "Seattle Mariners": 59, "St. Louis Cardinals": 63, "Tampa Bay Rays": 51,
+            "Texas Rangers": 61, "Toronto Blue Jays": 64, "Washington Nationals": 69
+        }
+
+        # Team abbreviations
+        team_abbr = {
+            "Arizona Diamondbacks": "ARI", "Atlanta Braves": "ATL", "Baltimore Orioles": "BAL",
+            "Boston Red Sox": "BOS", "Chicago Cubs": "CHC", "Chicago White Sox": "CWS", "Cincinnati Reds": "CIN",
+            "Cleveland Guardians": "CLE", "Colorado Rockies": "COL", "Detroit Tigers": "DET", "Houston Astros": "HOU",
+            "Kansas City Royals": "KC", "Los Angeles Angels": "LAA", "Los Angeles Dodgers": "LAD",
+            "Miami Marlins": "MIA", "Milwaukee Brewers": "MIL", "Minnesota Twins": "MIN", "New York Mets": "NYM",
+            "New York Yankees": "NYY", "Oakland Athletics": "OAK", "Philadelphia Phillies": "PHI",
+            "Pittsburgh Pirates": "PIT", "San Diego Padres": "SD", "San Francisco Giants": "SF",
+            "Seattle Mariners": "SEA", "St. Louis Cardinals": "STL", "Tampa Bay Rays": "TB",
+            "Texas Rangers": "TEX", "Toronto Blue Jays": "TOR", "Washington Nationals": "WSH"
+        }
+
+        # Calculate odds and packs
+        total_sigs = sum(team_sigs.values())
+        team_odds = {team: count / total_sigs * 100 for team, count in team_sigs.items()}
+        team_packs = {team: round(total_sigs / count, 2) if count > 0 else "N/A" for team, count in team_sigs.items()}
+
+        # Dropdown for team selection
+        selected_team = st.selectbox("Select a Team:", list(team_sigs.keys()))
+
+        # Display selected team stats
+        if selected_team:
+            st.subheader(f"Stats for {selected_team}:")
+            st.write(f"**Total Sigs:** {team_sigs[selected_team]}")
+            st.write(f"**Odds to Pull a Sig:** {team_odds[selected_team]:.2f}%")
+            st.write(f"**Sig Packs/Combos Needed (on average):** {team_packs[selected_team]}")
+
+        # Sorting options
+        sort_order = st.radio("Sort by:", ["Descending", "Ascending"])
+        sorted_teams = sorted(team_odds.items(), key=lambda x: x[1], reverse=(sort_order == "Descending"))
+        df = pd.DataFrame(sorted_teams, columns=["Team", "Odds (%)"])
+
+        # Get min and max values for dynamic scaling
+        min_value = df["Odds (%)"].min()
+        max_value = df["Odds (%)"].max()
+        scale_min = min_value - 0.25  # 0.5 lower than min
+        scale_max = max_value + 0.25  # 0.5 higher than max
+
+        # Checkbox for dynamic axis scaling
+        dynamic_scaling = st.checkbox("Enable Dynamic Axis Scaling")
+
+        # Create an interactive bar chart with dynamic scaling
+        fig = go.Figure()
+
+        # Add bar chart
+        fig.add_trace(go.Bar(
+            x=[team_abbr[team] for team in df["Team"]],
+            y=df["Odds (%)"],
+            text=[f"{val:.2f}%" for val in df["Odds (%)"]],  # Format text to 2 decimal places
+            textposition='outside',
+            name="Odds (%)"
+        ))
+
+        # Apply dynamic scaling if enabled
+        if dynamic_scaling:
+            fig.update_layout(yaxis=dict(range=[scale_min, scale_max]))
+
+        # Update layout for better appearance
+        fig.update_layout(
+            title="Team Signature Odds",
+            xaxis_title="Team",
+            yaxis_title="Odds (%)",
+            margin=dict(l=20, r=20, t=40, b=20),
+            xaxis_tickangle=-45  # Tilt text up and to the right
+        )
+
+        # Display the chart
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Add a scrollable table for detailed odds
+        with st.expander("View Detailed Odds Table"):
+            st.dataframe(df, height=300)  # Scrollable table
+
+        # Add a download button for the data
+        csv = df.to_csv(index=False)
+        st.download_button(label="Download Data as CSV", data=csv, file_name="team_signature_odds.csv", mime="text/csv")
 
 if __name__ == "__main__":
     main()
