@@ -203,7 +203,7 @@ def main():
 
         # Display selected team stats
         if selected_team:
-            st.subheader(f"Stats for {selected_team}:")
+            st.subheader(f"{selected_team}:")
             st.write(f"**Total Sigs:** {team_sigs[selected_team]}")
             st.write(f"**Odds to Pull a Sig:** {team_odds[selected_team]:.2f}%")
             st.write(f"**Sig Packs/Combos Needed (on average):** {team_packs[selected_team]}")
