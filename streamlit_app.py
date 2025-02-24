@@ -146,7 +146,8 @@ def main():
         st.write("All values are the original base + GI")
 
         stat_labels = ["CON", "POW", "EYE", "SPD", "FLD"]
-        base_stats = [st.number_input(f"Enter {label}:", min_value=1, max_value=150, value=90) for label in stat_labels]
+        cols = st.columns(5)
+        base_stats = [cols[i].number_input(f"{stat_labels[i]}", min_value=1, max_value=150, value=90) for i in range(5)]
 
         supreme = st.radio("Supreme?", ("No", "Yes"))
         total_points = 87 if supreme == "Yes" else 57
