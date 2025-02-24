@@ -143,7 +143,14 @@ def main():
 
     with tab2:
         st.header("5T Calculator")
-        st.write("All values are the original base + GI")
+        st.markdown("All values are the Original Base + GI\
+                      \nIf you already are using a BSAT note that below are the Original Bases + GI\n\
+           \n**Difficulty Rating Explanation:**\
+           \n- 0-4: Easy\
+           \n- 4-6: Somewhat difficult\
+           \n- 6-8: Moderately difficult\
+           \n- 8-9: Statistically unlikely\
+           \n- 9-10: Highly statistically unlikely")
 
         stat_labels = ["CON", "POW", "EYE", "SPD", "FLD"]
         cols = st.columns(5)
