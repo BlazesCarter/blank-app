@@ -174,6 +174,7 @@ def main():
         # Tab 3: Team Signature Odds
     with tab3:
         st.header("Team Signature Odds")
+        st.write("Updated as of 2025 2nd Live Update")
 
         # Team signature counts
         team_sigs = {
