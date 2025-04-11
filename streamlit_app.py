@@ -177,16 +177,38 @@ def main():
 
         # Team signature counts
         team_sigs = {
-            "Arizona Diamondbacks": 66, "Atlanta Braves": 72, "Baltimore Orioles": 59,
-            "Boston Red Sox": 76, "Chicago Cubs": 71, "Chicago White Sox": 62, "Cincinnati Reds": 67,
-            "Cleveland Guardians": 67, "Colorado Rockies": 65, "Detroit Tigers": 58, "Houston Astros": 78,
-            "Kansas City Royals": 56, "Los Angeles Angels": 59, "Los Angeles Dodgers": 90,
-            "Miami Marlins": 63, "Milwaukee Brewers": 58, "Minnesota Twins": 69, "New York Mets": 69,
-            "New York Yankees": 75, "Oakland Athletics": 64, "Philadelphia Phillies": 70,
-            "Pittsburgh Pirates": 67, "San Diego Padres": 64, "San Francisco Giants": 56,
-            "Seattle Mariners": 59, "St. Louis Cardinals": 63, "Tampa Bay Rays": 51,
-            "Texas Rangers": 61, "Toronto Blue Jays": 64, "Washington Nationals": 69
-        }
+    "Arizona Diamondbacks"  : 67,
+    "Atlanta Braves"        : 72,
+    "Baltimore Orioles"     : 60,
+    "Boston Red Sox"        : 77,
+    "Chicago Cubs"          : 71,
+    "Chicago White Sox"     : 62,
+    "Cincinnati Reds"       : 65,
+    "Cleveland Guardians"   : 67,
+    "Colorado Rockies"      : 65,
+    "Detroit Tigers"        : 59,
+    "Houston Astros"        : 75,
+    "Kansas City Royals"    : 56,
+    "Los Angeles Angels"    : 60,
+    "Los Angeles Dodgers"   : 88,
+    "Miami Marlins"         : 63,
+    "Milwaukee Brewers"     : 57,
+    "Minnesota Twins"       : 67,
+    "New York Mets"         : 68,
+    "New York Yankees"      : 75,
+    "Oakland Athletics"     : 62,
+    "Philadelphia Phillies" : 69,
+    "Pittsburgh Pirates"    : 68,
+    "San Diego Padres"      : 60,
+    "San Francisco Giants"  : 57,
+    "Seattle Mariners"      : 57,
+    "St. Louis Cardinals"   : 63,
+    "Tampa Bay Rays"        : 52,
+    "Texas Rangers"         : 58,
+    "Toronto Blue Jays"     : 65,
+    "Washington Nationals"  : 69
+}
+
 
         # Team abbreviations
         team_abbr = {
