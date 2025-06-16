@@ -135,7 +135,7 @@ def train_needed_5T(base_stats, total_points, stat_labels, bsat_adjustment=None)
 def main():
     st.title("9-Innings Tools")
 
-    tab1, tab2, tab3 = st.tabs(["Home", "5T-Calculator","Team Sig Odds"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Home", "5T-Calculator","Team Sig Odds","FIN/DOM Calculator"])
 
     with tab1:
         st.header("Welcome")
@@ -295,6 +295,90 @@ def main():
         # Add a download button for the data
         csv = df.to_csv(index=False)
         st.download_button(label="Download Data as CSV", data=csv, file_name="team_signature_odds.csv", mime="text/csv")
+
+    with tab4:
+        st.header("FIN/DOM Calculator")
+
+        st.markdown("""
+        **Directions:**
+        - Enter your pitcher's stats below.
+        - **To optimize a FIN train**: **LOC + BRK** must be **5+ higher** than **VEL + FB**
+        - **To optimize a DOM train**: **VEL + FB** must be **5+ higher** than **LOC + BRK**
+        """)
+
+        stat_labels = ["LOC", "VEL", "STA", "FB", "BRK"]
+        st.subheader("Pitcher's Stats (Base + GI)")
+        base_cols = st.columns(5)
+        base_stats = [base_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=150, value=70, key=f"base_{i}") for i in range(5)]
+        
+        st.subheader("Amp Tickets")
+        amp_cols = st.columns(5)
+        amps = [amp_cols[i].number_input(f"{stat_labels[i]} Amp", min_value=0, max_value=15, value=0, key=f"amp_{i}") for i in range(5)]
+        
+        st.subheader("Trainers")
+        trainer_cols = st.columns(5)
+        trainer_stats = [trainer_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=15, value=0, key=f"trainer_{i}") for i in range(5)]
+
+        total_stats = [base_stats[i] + trainer_stats[i] for i in range(5)]
+
+        st.subheader("Special Training Level")
+        st_level = st.slider("ST Level", 0, 10, 0)
+
+        def apply_special_training(stats, base_stats, st_level):
+            train_diff = [stats[i] - base_stats[i] for i in range(5)]
+            sorted_indices = sorted(range(5), key=lambda i: (-train_diff[i], -base_stats[i], i))
+            st_bonus = [0] * 5
+
+            if st_level >= 1:
+                st_bonus[sorted_indices[0]] += 2
+            if st_level >= 2:
+                st_bonus[sorted_indices[1]] += 2
+            if st_level >= 3:
+                st_bonus[sorted_indices[0]] += 2
+            if st_level >= 4:
+                st_bonus[sorted_indices[1]] += 2
+            if st_level >= 5:
+                st_bonus[sorted_indices[0]] += 2
+            if st_level >= 7:
+                st_bonus[sorted_indices[0]] += 2
+                st_bonus[sorted_indices[1]] += 2
+            if st_level >= 8:
+                st_bonus[sorted_indices[0]] += 2
+                st_bonus[sorted_indices[1]] += 2
+                st_bonus[sorted_indices[2]] += 2
+            if st_level >= 9:
+                st_bonus[sorted_indices[0]] += 2
+                st_bonus[sorted_indices[1]] += 2
+                st_bonus[sorted_indices[2]] += 2
+
+            return [stats[i] + st_bonus[i] + amps[i] for i in range(5)]
+
+        if st.button("Calculate", key="calculate_fin_dom"):
+            final_stats = apply_special_training(total_stats, base_stats, st_level)
+
+            st.subheader("Final Stats")
+
+            # Create a horizontal row of column labels
+            label_cols = st.columns(5)
+            for i in range(5):
+                label_cols[i].markdown(f"**{stat_labels[i]}**")
+
+            # Create a horizontal row of final stat values under the labels
+            value_cols = st.columns(5)
+            for i in range(5):
+                value_cols[i].markdown(f"{final_stats[i]}")
+
+            loc_brk = final_stats[0] + final_stats[4]
+            vel_fb = final_stats[1] + final_stats[3]
+
+            st.markdown("---")
+            st.subheader("Result:")
+            if loc_brk - vel_fb >= 5:
+                st.success("FIN Lean")
+            elif vel_fb - loc_brk >= 5:
+                st.success("DOM Lean")
+            else:
+                st.warning("No Lean")
 
 if __name__ == "__main__":
     main()
