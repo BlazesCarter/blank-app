@@ -265,6 +265,7 @@ def main():
             y=df["Odds (%)"],
             text=[f"{val:.2f}%" for val in df["Odds (%)"]],  # Format text to 2 decimal places
             textposition='outside',
+            textfont=dict(size=25),
             name="Odds (%)"
         ))
 
