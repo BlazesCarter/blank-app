@@ -278,8 +278,11 @@ def main():
             title="Team Signature Odds",
             xaxis_title="Team",
             yaxis_title="Odds (%)",
+            xaxis=dict(
+                tickangle=-45,
+                tickfont=dict(size=15)
+            ),
             margin=dict(l=20, r=20, t=40, b=20),
-            xaxis_tickangle=-45  # Tilt text up and to the right
         )
 
         # Display the chart
