@@ -160,6 +160,28 @@ def main():
         total_points = 87 if supreme == "Yes" else 57
 
         use_bsat = st.checkbox("Try with BSAT")
+        show_thresholds = st.checkbox("Show 5-Tool Boost Thresholds")
+
+        if show_thresholds:
+            boost_data = {
+                "Lowest Stat (Base+GI+Dev)": [
+                    "72–78", 81, 82, 83, 84, 85, 86, 87, 88, 89,
+                    90, 91, 92, 93, 94, 95, 96, 97, 98, 99,
+                    100, 101, 102, 103, 104, 105, 106
+                ],
+                "Stat Increase (Lv. 7)": [
+                    "+7", "+7", "+7", "+8", "+8", "+8", "+9", "+9", "+9", "+10",
+                    "+10", "+10", "+10", "+11", "+11", "+12", "+12", "+12", "+13", "+13",
+                    "+14", "+14", "+14", "+15", "+15", "+16", "+16"
+                ],
+                "Stat Increase (Lv. 8)": [
+                    "+8", "+8", "+8", "+9", "+9", "+10", "+10", "+10", "+11", "+11",
+                    "+12", "+12", "+12", "+13", "+13", "+14", "+14", "+15", "+15", "+15",
+                    "+16", "+16", "+16", "+17", "+17", "+18", "+18"
+                ]
+            }
+            df_boost = pd.DataFrame(boost_data)
+            st.table(df_boost)
         bsat_adjustment = None
         if use_bsat:
             subtract_stat = st.selectbox("Stat to decrease:", stat_labels, index=1)
