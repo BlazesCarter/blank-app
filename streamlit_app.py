@@ -304,6 +304,8 @@ def main():
         - Enter your pitcher's stats below.
         - **To optimize a FIN train**: **LOC + BRK** must be **5+ higher** than **VEL + FB**
         - **To optimize a DOM train**: **VEL + FB** must be **5+ higher** than **LOC + BRK**
+
+        - Disclaimer: Gear will affect FIN/DOM Bonuses
         """)
 
         stat_labels = ["LOC", "VEL", "STA", "FB", "BRK"]
