@@ -309,7 +309,7 @@ def main():
         """)
 
         stat_labels = ["LOC", "VEL", "STA", "FB", "BRK"]
-        st.subheader("Pitcher's Stats (Base + GI)")
+        st.subheader("Pitcher's Stats (Base + GI + Development)")
         base_cols = st.columns(5)
         base_stats = [base_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=150, value=70, key=f"base_{i}") for i in range(5)]
         
