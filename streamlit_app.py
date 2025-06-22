@@ -139,7 +139,7 @@ def main():
 
     with tab1:
         st.header("Welcome")
-        st.write("This is a work in progress, let me know what to add or fix.")
+        st.write("This site is not in any way affiliated with Com2Us, nor is it acting as or claiming to be an official resource.")
 
     with tab2:
         st.header("5T Calculator")
