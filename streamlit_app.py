@@ -315,7 +315,7 @@ def main():
         
         st.subheader("Amp Tickets")
         amp_cols = st.columns(5)
-        amps = [amp_cols[i].number_input(f"{stat_labels[i]} Amp", min_value=0, max_value=15, value=0, key=f"amp_{i}") for i in range(5)]
+        amps = [amp_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=15, value=0, key=f"amp_{i}") for i in range(5)]
         
         st.subheader("Trainers")
         trainer_cols = st.columns(5)
