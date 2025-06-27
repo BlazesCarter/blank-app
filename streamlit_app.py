@@ -296,7 +296,7 @@ def main():
         csv = df.to_csv(index=False)
         st.download_button(label="Download Data as CSV", data=csv, file_name="team_signature_odds.csv", mime="text/csv")
 
-    with tab4:
+   with tab4:
         st.header("FIN/DOM Calculator")
 
         st.markdown("""
@@ -309,29 +309,45 @@ def main():
         """)
 
         stat_labels = ["LOC", "VEL", "STA", "FB", "BRK"]
-        st.subheader("Pitcher's Stats (Base + GI + Development)")
+
+        # === Split input into Base, GI, and Development (Train)
+        st.subheader("Base Stats")
         base_cols = st.columns(5)
-        base_stats = [base_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=150, value=70, key=f"base_{i}") for i in range(5)]
-        
+        base_stats = [base_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=150, value=50, key=f"base_{i}") for i in range(5)]
+
+        st.subheader("Grade Increase (GI)")
+        gi_cols = st.columns(5)
+        gi_stats = [gi_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=90, value=15, key=f"gi_{i}") for i in range(5)]
+
+        st.subheader("Development (Train)")
+        train_cols = st.columns(5)
+        train_stats = [train_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=87, value=0, key=f"train_{i}") for i in range(5)]
+
         st.subheader("Amp Tickets")
         st.caption("(If applicable)")
         amp_cols = st.columns(5)
         amps = [amp_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=15, value=0, key=f"amp_{i}") for i in range(5)]
-        
-        st.subheader("Trainers")
-        trainer_cols = st.columns(5)
-        trainer_stats = [trainer_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=15, value=0, key=f"trainer_{i}") for i in range(5)]
-
-        total_stats = [base_stats[i] + trainer_stats[i] for i in range(5)]
 
         st.subheader("Special Training Level")
         st_level = st.slider("ST Level", 0, 10, 0)
 
-        def apply_special_training(stats, base_stats, st_level):
-            train_diff = [stats[i] - base_stats[i] for i in range(5)]
-            sorted_indices = sorted(range(5), key=lambda i: (-train_diff[i], -base_stats[i], i))
-            st_bonus = [0] * 5
+        def apply_special_training(base_stats, gi_stats, train_stats, amps, st_level):
+            # GI + Dev (Train)
+            train_total = [gi_stats[i] + train_stats[i] for i in range(5)]
+            pre_st_total = [base_stats[i] + train_total[i] + amps[i] for i in range(5)]
 
+            # Sort indices based on: Train > Distribution > Base > Left-to-right
+            sorted_indices = sorted(
+                range(5),
+                key=lambda i: (
+                    -train_stats[i],                 # 1. Development only
+                    -pre_st_total[i],               # 2. Distribution
+                    -base_stats[i],                 # 3. Base stat
+                    i                               # 4. Left to right
+                )
+            )
+
+            st_bonus = [0] * 5
             if st_level >= 1:
                 st_bonus[sorted_indices[0]] += 2
             if st_level >= 2:
@@ -354,19 +370,17 @@ def main():
                 st_bonus[sorted_indices[1]] += 2
                 st_bonus[sorted_indices[2]] += 2
 
-            return [stats[i] + st_bonus[i] + amps[i] for i in range(5)]
+            final_stats = [base_stats[i] + gi_stats[i] + train_stats[i] + amps[i] + st_bonus[i] for i in range(5)]
+            return final_stats
 
         if st.button("Calculate", key="calculate_fin_dom"):
-            final_stats = apply_special_training(total_stats, base_stats, st_level)
+            final_stats = apply_special_training(base_stats, gi_stats, train_stats, amps, st_level)
 
             st.subheader("Final Stats")
-
-            # Create a horizontal row of column labels
             label_cols = st.columns(5)
             for i in range(5):
                 label_cols[i].markdown(f"**{stat_labels[i]}**")
 
-            # Create a horizontal row of final stat values under the labels
             value_cols = st.columns(5)
             for i in range(5):
                 value_cols[i].markdown(f"{final_stats[i]}")
@@ -381,7 +395,9 @@ def main():
             elif vel_fb - loc_brk >= 5:
                 st.success("DOM Lean")
             else:
-                st.warning("No Lean")
+                st.warning("No Lean")                
+if __name__ == "__main__":
+    main()
                 
 if __name__ == "__main__":
     main()
