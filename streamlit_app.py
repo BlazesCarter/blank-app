@@ -296,105 +296,105 @@ def main():
         csv = df.to_csv(index=False)
         st.download_button(label="Download Data as CSV", data=csv, file_name="team_signature_odds.csv", mime="text/csv")
 
-   with tab4:
-        st.header("FIN/DOM Calculator")
-
-        st.markdown("""
-        **Directions:**
-        - Enter your pitcher's stats below.
-        - **To optimize a FIN train**: **LOC + BRK** must be **5+ higher** than **VEL + FB**
-        - **To optimize a DOM train**: **VEL + FB** must be **5+ higher** than **LOC + BRK**
-
-        - Disclaimer: Gear will affect FIN/DOM Bonuses
-        """)
-
-        stat_labels = ["LOC", "VEL", "STA", "FB", "BRK"]
-
-        # === Split input into Base, GI, and Development (Train)
-        st.subheader("Base Stats")
-        base_cols = st.columns(5)
-        base_stats = [base_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=150, value=50, key=f"base_{i}") for i in range(5)]
-
-        st.subheader("Grade Increase (GI)")
-        gi_cols = st.columns(5)
-        gi_stats = [gi_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=90, value=15, key=f"gi_{i}") for i in range(5)]
-
-        st.subheader("Development (Train)")
-        train_cols = st.columns(5)
-        train_stats = [train_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=87, value=0, key=f"train_{i}") for i in range(5)]
-
-        st.subheader("Amp Tickets")
-        st.caption("(If applicable)")
-        amp_cols = st.columns(5)
-        amps = [amp_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=15, value=0, key=f"amp_{i}") for i in range(5)]
-
-        st.subheader("Special Training Level")
-        st_level = st.slider("ST Level", 0, 10, 0)
-
-        def apply_special_training(base_stats, gi_stats, train_stats, amps, st_level):
-            # GI + Dev (Train)
-            train_total = [gi_stats[i] + train_stats[i] for i in range(5)]
-            pre_st_total = [base_stats[i] + train_total[i] + amps[i] for i in range(5)]
-
-            # Sort indices based on: Train > Distribution > Base > Left-to-right
-            sorted_indices = sorted(
-                range(5),
-                key=lambda i: (
-                    -train_stats[i],                 # 1. Development only
-                    -pre_st_total[i],               # 2. Distribution
-                    -base_stats[i],                 # 3. Base stat
-                    i                               # 4. Left to right
+    with tab4:
+            st.header("FIN/DOM Calculator")
+    
+            st.markdown("""
+            **Directions:**
+            - Enter your pitcher's stats below.
+            - **To optimize a FIN train**: **LOC + BRK** must be **5+ higher** than **VEL + FB**
+            - **To optimize a DOM train**: **VEL + FB** must be **5+ higher** than **LOC + BRK**
+    
+            - Disclaimer: Gear will affect FIN/DOM Bonuses
+            """)
+    
+            stat_labels = ["LOC", "VEL", "STA", "FB", "BRK"]
+    
+            # === Split input into Base, GI, and Development (Train)
+            st.subheader("Base Stats")
+            base_cols = st.columns(5)
+            base_stats = [base_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=150, value=50, key=f"base_{i}") for i in range(5)]
+    
+            st.subheader("Grade Increase (GI)")
+            gi_cols = st.columns(5)
+            gi_stats = [gi_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=90, value=15, key=f"gi_{i}") for i in range(5)]
+    
+            st.subheader("Development (Train)")
+            train_cols = st.columns(5)
+            train_stats = [train_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=87, value=0, key=f"train_{i}") for i in range(5)]
+    
+            st.subheader("Amp Tickets")
+            st.caption("(If applicable)")
+            amp_cols = st.columns(5)
+            amps = [amp_cols[i].number_input(f"{stat_labels[i]}", min_value=0, max_value=15, value=0, key=f"amp_{i}") for i in range(5)]
+    
+            st.subheader("Special Training Level")
+            st_level = st.slider("ST Level", 0, 10, 0)
+    
+            def apply_special_training(base_stats, gi_stats, train_stats, amps, st_level):
+                # GI + Dev (Train)
+                train_total = [gi_stats[i] + train_stats[i] for i in range(5)]
+                pre_st_total = [base_stats[i] + train_total[i] + amps[i] for i in range(5)]
+    
+                # Sort indices based on: Train > Distribution > Base > Left-to-right
+                sorted_indices = sorted(
+                    range(5),
+                    key=lambda i: (
+                        -train_stats[i],                 # 1. Development only
+                        -pre_st_total[i],               # 2. Distribution
+                        -base_stats[i],                 # 3. Base stat
+                        i                               # 4. Left to right
+                    )
                 )
-            )
-
-            st_bonus = [0] * 5
-            if st_level >= 1:
-                st_bonus[sorted_indices[0]] += 2
-            if st_level >= 2:
-                st_bonus[sorted_indices[1]] += 2
-            if st_level >= 3:
-                st_bonus[sorted_indices[0]] += 2
-            if st_level >= 4:
-                st_bonus[sorted_indices[1]] += 2
-            if st_level >= 5:
-                st_bonus[sorted_indices[0]] += 2
-            if st_level >= 7:
-                st_bonus[sorted_indices[0]] += 2
-                st_bonus[sorted_indices[1]] += 2
-            if st_level >= 8:
-                st_bonus[sorted_indices[0]] += 2
-                st_bonus[sorted_indices[1]] += 2
-                st_bonus[sorted_indices[2]] += 2
-            if st_level >= 9:
-                st_bonus[sorted_indices[0]] += 2
-                st_bonus[sorted_indices[1]] += 2
-                st_bonus[sorted_indices[2]] += 2
-
-            final_stats = [base_stats[i] + gi_stats[i] + train_stats[i] + amps[i] + st_bonus[i] for i in range(5)]
-            return final_stats
-
-        if st.button("Calculate", key="calculate_fin_dom"):
-            final_stats = apply_special_training(base_stats, gi_stats, train_stats, amps, st_level)
-
-            st.subheader("Final Stats")
-            label_cols = st.columns(5)
-            for i in range(5):
-                label_cols[i].markdown(f"**{stat_labels[i]}**")
-
-            value_cols = st.columns(5)
-            for i in range(5):
-                value_cols[i].markdown(f"{final_stats[i]}")
-
-            loc_brk = final_stats[0] + final_stats[4]
-            vel_fb = final_stats[1] + final_stats[3]
-
-            st.markdown("---")
-            st.subheader("Result:")
-            if loc_brk - vel_fb >= 5:
-                st.success("FIN Lean")
-            elif vel_fb - loc_brk >= 5:
-                st.success("DOM Lean")
-            else:
-                st.warning("No Lean")                
+    
+                st_bonus = [0] * 5
+                if st_level >= 1:
+                    st_bonus[sorted_indices[0]] += 2
+                if st_level >= 2:
+                    st_bonus[sorted_indices[1]] += 2
+                if st_level >= 3:
+                    st_bonus[sorted_indices[0]] += 2
+                if st_level >= 4:
+                    st_bonus[sorted_indices[1]] += 2
+                if st_level >= 5:
+                    st_bonus[sorted_indices[0]] += 2
+                if st_level >= 7:
+                    st_bonus[sorted_indices[0]] += 2
+                    st_bonus[sorted_indices[1]] += 2
+                if st_level >= 8:
+                    st_bonus[sorted_indices[0]] += 2
+                    st_bonus[sorted_indices[1]] += 2
+                    st_bonus[sorted_indices[2]] += 2
+                if st_level >= 9:
+                    st_bonus[sorted_indices[0]] += 2
+                    st_bonus[sorted_indices[1]] += 2
+                    st_bonus[sorted_indices[2]] += 2
+    
+                final_stats = [base_stats[i] + gi_stats[i] + train_stats[i] + amps[i] + st_bonus[i] for i in range(5)]
+                return final_stats
+    
+            if st.button("Calculate", key="calculate_fin_dom"):
+                final_stats = apply_special_training(base_stats, gi_stats, train_stats, amps, st_level)
+    
+                st.subheader("Final Stats")
+                label_cols = st.columns(5)
+                for i in range(5):
+                    label_cols[i].markdown(f"**{stat_labels[i]}**")
+    
+                value_cols = st.columns(5)
+                for i in range(5):
+                    value_cols[i].markdown(f"{final_stats[i]}")
+    
+                loc_brk = final_stats[0] + final_stats[4]
+                vel_fb = final_stats[1] + final_stats[3]
+    
+                st.markdown("---")
+                st.subheader("Result:")
+                if loc_brk - vel_fb >= 5:
+                    st.success("FIN Lean")
+                elif vel_fb - loc_brk >= 5:
+                    st.success("DOM Lean")
+                else:
+                    st.warning("No Lean")                
 if __name__ == "__main__":
     main()
