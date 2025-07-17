@@ -397,4 +397,3 @@ def main():
                 else:
                     st.warning("No Lean")                
 if __name__ == "__main__":
-    main()
