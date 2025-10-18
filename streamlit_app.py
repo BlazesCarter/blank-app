@@ -483,7 +483,7 @@ def main():
             {"name": "ALL Historic Box", "cost": 5000, "limit": 1},
             {"name": "Ult Vintage Player Pack", "cost": 4000, "limit": 3},
             {"name": "Special Signature Pack", "cost": 4000, "limit": 2},
-            {"name": "TSS", "cost": 8000, "limit": 1},
+            {"name": "Team Selective Sig Pack", "cost": 8000, "limit": 1},
             {"name": "Legend Player Pack", "cost": 10000, "limit": 1},
         ]
 
