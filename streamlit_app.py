@@ -399,65 +399,133 @@ def main():
     # ---------------- Tab 5: Donation Event Calculator ----------------
     with tab5:
         st.title("Donation Event Calculator")
+        st.caption("(*Based on the 2025 Donation Event points and items)")
+        st.markdown("### Enter how many of each card tier you have:")
 
-        st.markdown("### Enter the number of each card you have by tier:")
-
+        # --- Card Inputs (Supreme, Legend, Signature, Prime) ---
+        # Supreme
         st.subheader("Supreme")
-        supreme_gold = st.number_input("Supreme (Gold or higher)", min_value=0, step=1)
-        supreme_silver = st.number_input("Supreme (Silver)", min_value=0, step=1)
+        c1, c2 = st.columns(2)
+        with c1:
+            supreme_gold = st.number_input("Gold or higher", min_value=0, step=1, key="supreme_gold")
+        with c2:
+            supreme_silver = st.number_input("Silver", min_value=0, step=1, key="supreme_silver")
 
+        # Legend
         st.subheader("Legend")
-        legend_gold = st.number_input("Legend (Gold or higher)", min_value=0, step=1)
-        legend_silver = st.number_input("Legend (Silver)", min_value=0, step=1)
+        c1, c2 = st.columns(2)
+        with c1:
+            legend_gold = st.number_input("Gold or higher", min_value=0, step=1, key="legend_gold")
+        with c2:
+            legend_silver = st.number_input("Silver", min_value=0, step=1, key="legend_silver")
 
+        # Signature
         st.subheader("Signature")
-        signature_diamond = st.number_input("Signature (Diamond)", min_value=0, step=1)
-        signature_gold = st.number_input("Signature (Gold)", min_value=0, step=1)
-        signature_silver = st.number_input("Signature (Silver)", min_value=0, step=1)
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            signature_diamond = st.number_input("Diamond", min_value=0, step=1, key="signature_diamond")
+        with c2:
+            signature_gold = st.number_input("Gold", min_value=0, step=1, key="signature_gold")
+        with c3:
+            signature_silver = st.number_input("Silver", min_value=0, step=1, key="signature_silver")
 
+        # Prime
         st.subheader("Prime (Limited to 50 copies)")
-        prime_diamond = st.number_input("Prime (Diamond)", min_value=0, step=1)
-        prime_gold = st.number_input("Prime (Gold)", min_value=0, step=1)
-        prime_silver = st.number_input("Prime (Silver)", min_value=0, step=1)
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            prime_diamond = st.number_input("Diamond", min_value=0, step=1, key="prime_diamond")
+        with c2:
+            prime_gold = st.number_input("Gold", min_value=0, step=1, key="prime_gold")
+        with c3:
+            prime_silver = st.number_input("Silver", min_value=0, step=1, key="prime_silver")
 
-        # Calculate total number of Prime cards
+        # --- PRIME LIMIT CHECK ---
         total_prime = prime_diamond + prime_gold + prime_silver
-
         if total_prime > 50:
-            st.error("❌ You cannot have more than 50 Prime cards total. Please adjust your inputs.")
-            calculate = False
+            st.error("You cannot have more than 50 Prime cards total. Please adjust your inputs.")
+            total_points = 0
         else:
-            calculate = st.button("Calculate Total Points")
-
-        if calculate:
-            # Define point values
-            points = {
-                "Supreme_Gold": 4500,
-                "Supreme_Silver": 4000,
-                "Legend_Gold": 4500,
-                "Legend_Silver": 4000,
-                "Signature_Diamond": 1000,
-                "Signature_Gold": 500,
-                "Signature_Silver": 300,
-                "Prime_Diamond": 300,
-                "Prime_Gold": 150,
-                "Prime_Silver": 100
+            # Calculate total points dynamically
+            points_map = {
+                "Supreme Gold+": 4500,
+                "Supreme Silver": 4000,
+                "Legend Gold+": 4500,
+                "Legend Silver": 4000,
+                "Signature Diamond": 1000,
+                "Signature Gold": 500,
+                "Signature Silver": 300,
+                "Prime Diamond": 300,
+                "Prime Gold": 150,
+                "Prime Silver": 100
             }
 
-            # Compute total points
             total_points = (
-                supreme_gold * points["Supreme_Gold"] +
-                supreme_silver * points["Supreme_Silver"] +
-                legend_gold * points["Legend_Gold"] +
-                legend_silver * points["Legend_Silver"] +
-                signature_diamond * points["Signature_Diamond"] +
-                signature_gold * points["Signature_Gold"] +
-                signature_silver * points["Signature_Silver"] +
-                prime_diamond * points["Prime_Diamond"] +
-                prime_gold * points["Prime_Gold"] +
-                prime_silver * points["Prime_Silver"]
+                supreme_gold * points_map["Supreme Gold+"] +
+                supreme_silver * points_map["Supreme Silver"] +
+                legend_gold * points_map["Legend Gold+"] +
+                legend_silver * points_map["Legend Silver"] +
+                signature_diamond * points_map["Signature Diamond"] +
+                signature_gold * points_map["Signature Gold"] +
+                signature_silver * points_map["Signature Silver"] +
+                prime_diamond * points_map["Prime Diamond"] +
+                prime_gold * points_map["Prime Gold"] +
+                prime_silver * points_map["Prime Silver"]
             )
+            st.subheader("Total Donation Points")
+            st.success(f"**{total_points:,} points**")
 
-            st.success(f"🎉 Your total event points: **{total_points:,}**")
+        # === ITEM SHOP ===
+        st.markdown("### 2025 Item Shop")
+
+        shop_items = [
+            {"name": "Team P/B Diamond Pack", "cost": 2000, "limit": 3},
+            {"name": "Diamond Trainer", "cost": 5000, "limit": 1},
+            {"name": "ALL Historic Box", "cost": 5000, "limit": 1},
+            {"name": "Ult Vintage Player Pack", "cost": 4000, "limit": 3},
+            {"name": "Special Signature Pack", "cost": 4000, "limit": 2},
+            {"name": "TSS", "cost": 8000, "limit": 1},
+            {"name": "Legend Player Pack", "cost": 10000, "limit": 1},
+        ]
+
+        st.markdown("Select how many of each item you want (respects limits and your points):")
+
+        purchase = {}
+
+        # First row: first 4 items
+        cols1 = st.columns(4)
+        for i in range(4):
+            item = shop_items[i]
+            with cols1[i]:
+                st.markdown(f"{item['cost']:,} pts  \n{item['name']}  \nExchangeable {item['limit']}")
+                purchase[item["name"]] = st.number_input("", min_value=0, max_value=item["limit"], step=1, key=item["name"])
+
+        # Second row: last 3 items centered
+        cols2 = st.columns([1,2,2,2,1])
+        for j in range(3):
+            item = shop_items[j + 4]
+            with cols2[j + 1]:
+                st.markdown(f"{item['cost']:,} pts  \n{item['name']}  \nExchangeable {item['limit']}")
+                purchase[item["name"]] = st.number_input("", min_value=0, max_value=item["limit"], step=1, key=item["name"])
+
+        # Calculate total cost and remaining points
+        total_cost = sum(purchase[item["name"]] * item["cost"] for item in shop_items)
+        remaining_points = total_points - total_cost
+
+        if remaining_points < 0:
+            st.warning(f"Not enough points. Over by {-remaining_points:,} points.")
+        else:
+            st.success(f"Purchases valid. Remaining points: {remaining_points:,}")
+
+        # Purchase summary
+        purchase_summary = [
+            (item["name"], purchase[item["name"]], item["cost"], purchase[item["name"]] * item["cost"])
+            for item in shop_items if purchase[item["name"]] > 0
+        ]
+        if purchase_summary:
+            df_purchase = pd.DataFrame(purchase_summary, columns=["Item", "Quantity", "Cost per Item", "Total Cost"])
+            st.subheader("Purchase Summary")
+            st.dataframe(df_purchase.style.format({"Cost per Item": "{:,.0f}", "Total Cost": "{:,.0f}"}))
+        else:
+            st.info("No items selected for purchase.")
 if __name__ == "__main__":
         main()
