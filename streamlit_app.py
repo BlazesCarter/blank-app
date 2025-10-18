@@ -135,7 +135,7 @@ def train_needed_5T(base_stats, total_points, stat_labels, bsat_adjustment=None)
 def main():
     st.title("9-Innings Tools")
 
-    tab1, tab2, tab3, tab4 = st.tabs(["Home", "5T-Calculator","Team Sig Odds","FIN/DOM Calculator"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Home", "5T-Calculator","Team Sig Odds","FIN/DOM Calculator", "Donation Event Calculator"])
 
     with tab1:
         st.header("Welcome")
@@ -395,6 +395,69 @@ def main():
                 elif vel_fb - loc_brk >= 5:
                     st.success("DOM Lean")
                 else:
-                    st.warning("No Lean")                
+                    st.warning("No Lean")
+    # ---------------- Tab 5: Donation Event Calculator ----------------
+    with tab5:
+        st.title("Donation Event Calculator")
+
+        st.markdown("### Enter the number of each card you have by tier:")
+
+        st.subheader("Supreme")
+        supreme_gold = st.number_input("Supreme (Gold or higher)", min_value=0, step=1)
+        supreme_silver = st.number_input("Supreme (Silver)", min_value=0, step=1)
+
+        st.subheader("Legend")
+        legend_gold = st.number_input("Legend (Gold or higher)", min_value=0, step=1)
+        legend_silver = st.number_input("Legend (Silver)", min_value=0, step=1)
+
+        st.subheader("Signature")
+        signature_diamond = st.number_input("Signature (Diamond)", min_value=0, step=1)
+        signature_gold = st.number_input("Signature (Gold)", min_value=0, step=1)
+        signature_silver = st.number_input("Signature (Silver)", min_value=0, step=1)
+
+        st.subheader("Prime (Limited to 50 copies)")
+        prime_diamond = st.number_input("Prime (Diamond)", min_value=0, step=1)
+        prime_gold = st.number_input("Prime (Gold)", min_value=0, step=1)
+        prime_silver = st.number_input("Prime (Silver)", min_value=0, step=1)
+
+        # Calculate total number of Prime cards
+        total_prime = prime_diamond + prime_gold + prime_silver
+
+        if total_prime > 50:
+            st.error("❌ You cannot have more than 50 Prime cards total. Please adjust your inputs.")
+            calculate = False
+        else:
+            calculate = st.button("Calculate Total Points")
+
+        if calculate:
+            # Define point values
+            points = {
+                "Supreme_Gold": 4500,
+                "Supreme_Silver": 4000,
+                "Legend_Gold": 4500,
+                "Legend_Silver": 4000,
+                "Signature_Diamond": 1000,
+                "Signature_Gold": 500,
+                "Signature_Silver": 300,
+                "Prime_Diamond": 300,
+                "Prime_Gold": 150,
+                "Prime_Silver": 100
+            }
+
+            # Compute total points
+            total_points = (
+                supreme_gold * points["Supreme_Gold"] +
+                supreme_silver * points["Supreme_Silver"] +
+                legend_gold * points["Legend_Gold"] +
+                legend_silver * points["Legend_Silver"] +
+                signature_diamond * points["Signature_Diamond"] +
+                signature_gold * points["Signature_Gold"] +
+                signature_silver * points["Signature_Silver"] +
+                prime_diamond * points["Prime_Diamond"] +
+                prime_gold * points["Prime_Gold"] +
+                prime_silver * points["Prime_Silver"]
+            )
+
+            st.success(f"🎉 Your total event points: **{total_points:,}**")
 if __name__ == "__main__":
         main()
