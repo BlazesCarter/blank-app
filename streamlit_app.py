@@ -399,11 +399,13 @@ def main():
     # ---------------- Tab 5: Donation Event Calculator ----------------
     with tab5:
         st.title("Donation Event Calculator")
-        st.caption("(*Based on the 2025 Donation Event points and items)\n"
-           "> Player Donation Period: Oct. 13, 1:00 AM - Oct. 26, 10:59 AM EDT\n"
-           "> Player Pool Decision Period: Oct. 26, 11:00 AM - Oct. 28, 00:59 AM EDT\n"
-           "> Player Draw Period: Oct. 28, 1:00 AM EDT - Nov. 10, 9:59 AM EST\n"
-           "> Item Shop Open Period: Oct. 28, 1:00 AM EDT - Nov. 11, 9:59 AM EST")
+        st.caption("""(*Based on the 2025 Donation Event points and items)
+> Player Donation Period: Oct. 13, 1:00 AM - Oct. 26, 10:59 AM EDT  
+> Player Pool Decision Period: Oct. 26, 11:00 AM - Oct. 28, 00:59 AM EDT  
+> Player Draw Period: Oct. 28, 1:00 AM EDT - Nov. 10, 9:59 AM EST  
+> Item Shop Open Period: Oct. 28, 1:00 AM EDT - Nov. 11, 9:59 AM EST
+""")
+
         st.markdown("### Enter how many of each card tier you have:")
 
         # --- Card Inputs (Supreme, Legend, Signature, Prime) ---
