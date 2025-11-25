@@ -196,20 +196,20 @@ def main():
         # Tab 3: Team Signature Odds
     with tab3:
         st.header("Team Signature Odds")
-        st.write("Updated as of 2025 8th Live Update")
+        st.write("Updated as of 2025 16th Live Update")
 
         # Team signature counts
         team_sigs = {
-            "Arizona Diamondbacks": 56, "Atlanta Braves": 67, "Baltimore Orioles": 59,
-            "Boston Red Sox": 75, "Chicago Cubs": 67, "Chicago White Sox": 52,
-            "Cincinnati Reds": 62, "Cleveland Guardians": 75, "Colorado Rockies": 56,
-            "Detroit Tigers": 57, "Houston Astros": 74, "Kansas City Royals": 50,
-            "Los Angeles Angels": 58, "Los Angeles Dodgers": 89, "Miami Marlins": 54,
-            "Milwaukee Brewers": 56, "Minnesota Twins": 65, "New York Mets": 67,
-            "New York Yankees": 72, "Oakland Athletics": 60, "Philadelphia Phillies": 68,
-            "Pittsburgh Pirates": 72, "San Diego Padres": 58, "San Francisco Giants": 54,
-            "Seattle Mariners": 52, "St. Louis Cardinals": 60, "Tampa Bay Rays": 47,
-            "Texas Rangers": 55, "Toronto Blue Jays": 63, "Washington Nationals": 68
+        "Arizona Diamondbacks": 57, "Atlanta Braves": 68, "Baltimore Orioles": 59,
+        "Boston Red Sox": 77, "Chicago Cubs": 67, "Chicago White Sox": 56,
+        "Cincinnati Reds": 65, "Cleveland Guardians": 72, "Colorado Rockies": 56,
+        "Detroit Tigers": 60, "Houston Astros": 74, "Kansas City Royals": 50,
+        "Los Angeles Angels": 58, "Los Angeles Dodgers": 88, "Miami Marlins": 57,
+        "Milwaukee Brewers": 57, "Minnesota Twins": 64, "New York Mets": 68,
+        "New York Yankees": 71, "Oakland Athletics": 61, "Philadelphia Phillies": 71,
+        "Pittsburgh Pirates": 71, "San Diego Padres": 64, "San Francisco Giants": 55,
+        "Seattle Mariners": 53, "St. Louis Cardinals": 60, "Tampa Bay Rays": 49,
+        "Texas Rangers": 55, "Toronto Blue Jays": 63, "Washington Nationals": 63
         }
 
 
