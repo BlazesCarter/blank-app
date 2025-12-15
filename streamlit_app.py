@@ -200,16 +200,16 @@ def main():
 
         # Team signature counts
         team_sigs = {
-        "Arizona Diamondbacks": 57, "Atlanta Braves": 68, "Baltimore Orioles": 59,
-        "Boston Red Sox": 77, "Chicago Cubs": 67, "Chicago White Sox": 56,
-        "Cincinnati Reds": 65, "Cleveland Guardians": 72, "Colorado Rockies": 56,
-        "Detroit Tigers": 60, "Houston Astros": 74, "Kansas City Royals": 50,
-        "Los Angeles Angels": 58, "Los Angeles Dodgers": 88, "Miami Marlins": 57,
-        "Milwaukee Brewers": 57, "Minnesota Twins": 64, "New York Mets": 68,
-        "New York Yankees": 71, "Oakland Athletics": 61, "Philadelphia Phillies": 71,
-        "Pittsburgh Pirates": 71, "San Diego Padres": 64, "San Francisco Giants": 55,
-        "Seattle Mariners": 53, "St. Louis Cardinals": 60, "Tampa Bay Rays": 49,
-        "Texas Rangers": 55, "Toronto Blue Jays": 63, "Washington Nationals": 63
+        "Arizona Diamondbacks": 61, "Atlanta Braves": 71, "Baltimore Orioles": 62,
+        "Boston Red Sox": 80, "Chicago Cubs": 73, "Chicago White Sox": 59,
+        "Cincinnati Reds": 69, "Cleveland Guardians": 74, "Colorado Rockies": 59,
+        "Detroit Tigers": 64, "Houston Astros": 79, "Kansas City Royals": 55,
+        "Los Angeles Angels": 61, "Los Angeles Dodgers": 92, "Miami Marlins": 61,
+        "Milwaukee Brewers": 63, "Minnesota Twins": 67, "New York Mets": 71,
+        "New York Yankees": 77, "Oakland Athletics": 66, "Philadelphia Phillies": 79,
+        "Pittsburgh Pirates": 74, "San Diego Padres": 69, "San Francisco Giants": 59,
+        "Seattle Mariners": 59, "St. Louis Cardinals": 64, "Tampa Bay Rays": 53,
+        "Texas Rangers": 60, "Toronto Blue Jays": 69, "Washington Nationals": 66
         }
 
 
