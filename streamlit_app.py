@@ -135,7 +135,7 @@ def train_needed_5T(base_stats, total_points, stat_labels, bsat_adjustment=None)
 def main():
     st.title("9-Innings Tools")
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Home", "5T-Calculator","Team Sig Odds","FIN/DOM Calculator", "Donation Event Calculator"])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Home", "5T-Calculator","Team Sig Odds","FIN/DOM Calculator", "Donation Event Calculator", "Special Shop Prices"])
 
     with tab1:
         st.header("Welcome")
@@ -533,5 +533,11 @@ def main():
             st.dataframe(df_purchase.style.format({"Cost per Item": "{:,.0f}", "Total Cost": "{:,.0f}"}))
         else:
             st.info("No items selected for purchase.")
+
+        # ---------------- Tab 5: Donation Event Calculator ----------------
+    with tab6:
+        st.title("Special Shop Prices")
+        st.caption("Work In Progress")
+
 if __name__ == "__main__":
         main()
