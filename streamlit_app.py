@@ -538,6 +538,7 @@ def main():
     with tab6:
         st.title("Special Shop Prices")
         st.caption("Work In Progress")
+        st.caption("Disclaimer: Based off past shops, not all items will be in the shop at one time")
         shop_data = {
         "Item": [
             "Grade Increase (GI)", "Diamond Skill Trainer (DST)", "Diamond Trainer (DT)", "Legendary Skill Change Ticket (LSCT)", "DT Position Change",
