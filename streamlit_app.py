@@ -141,7 +141,7 @@ def main():
         st.header("Welcome")
         st.write("This site is not in any way affiliated with Com2Us, nor is it acting as or claiming to be an official resource.")
 
-        st.page_link("pages/Special_Shop_Prices.py",label="🛒 Special Shop Prices")
+        
 
     with tab2:
         st.header("5T Calculator")
